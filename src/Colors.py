@@ -1,5 +1,9 @@
 # Collection of Tuples rappresenting colors:
 BLACK = (0,0,0)
-GRAY = (190,190,190)
+GRAY = (127,127,127)
 WHITE = (255,255,255)
-WALL = (150,50,50)
+
+TERRAIN = (203, 217, 191)
+TREE = (32, 51, 31)
+WATER = (103, 231, 240)
+GOAL = (255, 34, 0)

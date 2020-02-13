@@ -20,6 +20,9 @@ class Grid():
         self.grid = []
         self.__initialize_grid()
 
+        self.goal_r = 0
+        self.goal_c = 0
+
     def __side_size_from_grid_size(self, cmd):
         if(cmd == "L"):
             side_size = 63
@@ -45,32 +48,40 @@ class Grid():
 
         return (r,c)
 
+    def reset(self):
+        for r in range(self.grid_rows):
+            for c in range(self.grid_cols):
+                self.grid[r][c] = 0
+
     def set_cell(self, x, y, cmd):
         r,c = self.__cell_from_coords(x,y)
 
-        if(cmd == "WHITE"):
+        if(cmd == "TERRAIN"):
             self.grid[r][c] = 0
-        elif(cmd == "BLACK"):
+        elif(cmd == "TREE"):
             self.grid[r][c] = -1
-        elif(cmd == "GRAY"):
+        elif(cmd == "WATER"):
             self.grid[r][c] = -2
-        elif(cmd == "WALL"):
-            self.grid[r][c] = -3
-        else:
-            print("[Grid] Invalid Command")
+        elif(cmd == "GOAL"):
+            self.grid[self.goal_r][self.goal_c] = 0
+
+            self.goal_r = r
+            self.goal_c = c
+
+            self.grid[self.goal_r][self.goal_c] = 1
 
     def draw(self, pygame_screen):
         for r in range(self.grid_rows):
             for c in range(self.grid_cols):
 
                 if(self.grid[r][c] == 0):
-                    tmp_color = Colors.WHITE
+                    tmp_color = Colors.TERRAIN
                 elif(self.grid[r][c] == -1):
-                    tmp_color = Colors.BLACK
+                    tmp_color = Colors.TREE
                 elif(self.grid[r][c] == -2):
-                    tmp_color = Colors.GRAY
-                elif(self.grid[r][c] == -3):
-                    tmp_color = Colors.WALL
+                    tmp_color = Colors.WATER
+                elif(self.grid[r][c] == 1):
+                    tmp_color = Colors.GOAL
 
                 tmp_x = (self.cell_width + self.cell_border) * c
                 tmp_y = (self.cell_height + self.cell_border) * r
