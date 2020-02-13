@@ -4,10 +4,12 @@ import Colors
 
 class Grid():
 
-    def __init__(self, window_width, window_height):
+    def __init__(self, window_width, window_height, grid_size):
+        side_size = self.__side_size_from_grid_size(grid_size)
+
         # Cell parameters:
-        self.cell_width = 31
-        self.cell_height = 31
+        self.cell_width = side_size
+        self.cell_height = side_size
         self.cell_border = 1
 
         # Calculating the number of columns and rows from window's width and height:
@@ -17,6 +19,18 @@ class Grid():
         # The two-dimensional array rappresenting the grid:
         self.grid = []
         self.__initialize_grid()
+
+    def __side_size_from_grid_size(self, cmd):
+        if(cmd == "L"):
+            side_size = 63
+        elif(cmd == "M"):
+            side_size = 31
+        elif(cmd == "S"):
+            side_size = 15
+        else:
+            side_size = 15
+
+        return side_size
 
     def __initialize_grid(self):
         for r in range(self.grid_rows):
