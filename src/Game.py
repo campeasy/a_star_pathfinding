@@ -29,7 +29,7 @@ class Game():
 
         window_alive = True
         mouse_is_pressed = False
-        insert_type = "TREE"
+        insert_type = "TERRAIN"
 
         while window_alive:
             # Event Handling:
@@ -48,7 +48,6 @@ class Game():
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_w:
                         insert_type = "WATER"
-
                     elif event.key == pygame.K_t:
                         insert_type = "TREE"
 
