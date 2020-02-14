@@ -1,4 +1,5 @@
 import pygame
+import random
 
 import Colors
 
@@ -61,21 +62,56 @@ class Grid():
     def __is_goal(self, r, c):
         return (r == self.goal_r and c == self.goal_c)
 
-    def get_grid(self):
+    def get(self):
         return self.grid
 
-    def reset(self):
+    def clean(self):
         # Resetting the Grid:
         for r in range(self.grid_rows):
             for c in range(self.grid_cols):
                 self.grid[r][c] = 0
 
+    def random(self):
+        # Generating Random Map:
+        prev_type = 0
+        for r in range(self.grid_rows):
+            for c in range(self.grid_cols):
+                # Setting the probs based on the previous cell type:
+                if(prev_type == 0):
+                    prob_land = 94
+                    prob_tree = 3
+                    prob_water = 3
+                elif(prev_type == -1):
+                    prob_land = 42
+                    prob_tree = 53
+                    prob_water = 5
+                elif(prev_type == -2):
+                    prob_land = 42
+                    prob_tree = 5
+                    prob_water = 53
+
+                # Setting the new cell type:
+                tmp_random = random.randint(0,100)
+                if(tmp_random <= prob_land):
+                    cell_type = 0
+                elif(tmp_random > prob_land and tmp_random <= prob_land+prob_tree):
+                    cell_type = -1
+                else:
+                    cell_type = -2
+
+                self.grid[r][c] = cell_type
+                prev_type = cell_type
+
+        # Setting Random Goal:
+        random_goal_r = random.randint(0, self.grid_rows-1)
+        random_goal_c = random.randint(0, self.grid_cols-1)
+        self.__set_goal(random_goal_r, random_goal_c)
+
     def set_cell(self, x, y, cmd):
         r,c = self.__cell_from_coords(x,y)
 
         if(not self.__is_goal(r,c)):
-            if(cmd == "TERRAIN"):
-                if(r == self.goal_r and c == self.goal_c): return
+            if(cmd == "LAND"):
                 self.grid[r][c] = 0
             elif(cmd == "TREE"):
                 self.grid[r][c] = -1
@@ -90,7 +126,7 @@ class Grid():
             for c in range(self.grid_cols):
 
                 if(self.grid[r][c] == 0):
-                    tmp_color = Colors.TERRAIN
+                    tmp_color = Colors.LAND
                 elif(self.grid[r][c] == -1):
                     tmp_color = Colors.TREE
                 elif(self.grid[r][c] == -2):

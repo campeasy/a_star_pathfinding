@@ -29,7 +29,7 @@ class Game():
 
         window_alive = True
         mouse_is_pressed = False
-        insert_type = "TERRAIN"
+        insert_type = "LAND"
 
         while window_alive:
             # Event Handling:
@@ -46,21 +46,29 @@ class Game():
 
                 # Keyboard Handling:
                 elif event.type == pygame.KEYDOWN:
+                    # Insert Type Keys:
                     if event.key == pygame.K_w:
                         insert_type = "WATER"
                     elif event.key == pygame.K_t:
                         insert_type = "TREE"
+                    elif event.key == pygame.K_l:
+                        insert_type = "LAND"
 
+                    # Grid Cleaning / Random Generation:
+                    elif event.key == pygame.K_c:
+                        self.grid.clean()
+                    elif event.key == pygame.K_r:
+                        self.grid.random()
+
+                    # Setting Goal:
                     elif event.key == pygame.K_g:
                         x_click = pygame.mouse.get_pos()[0]
                         y_click = pygame.mouse.get_pos()[1]
                         self.grid.set_cell(x_click, y_click, "GOAL")
 
-                    elif event.key == pygame.K_r:
-                        self.grid.reset()
-
                     # elif event.key == pygame.K_SPACE:
 
+            # Insert Mode:
             if(mouse_is_pressed):
                 x_click = pygame.mouse.get_pos()[0]
                 y_click = pygame.mouse.get_pos()[1]
@@ -76,5 +84,5 @@ class Game():
         pygame.quit()
 
 if __name__ == "__main__":
-    g = Game("Game", 1800, 1000, "L")
+    g = Game("A_star_pathfinding", 1800, 1000, "L")
     g.run()
