@@ -29,6 +29,8 @@ class Game():
 
         window_alive = True
         mouse_is_pressed = False
+
+        insert_mode = 0
         insert_type = "LAND"
 
         while window_alive:
@@ -48,20 +50,26 @@ class Game():
                 elif event.type == pygame.KEYDOWN:
                     # Insert Type Keys:
                     if event.key == pygame.K_w:
+                        insert_mode = 1
                         insert_type = "WATER"
                     elif event.key == pygame.K_t:
+                        insert_mode = 1
                         insert_type = "TREE"
                     elif event.key == pygame.K_l:
+                        insert_mode = 1
                         insert_type = "LAND"
 
                     # Grid Cleaning / Random Generation:
                     elif event.key == pygame.K_c:
+                        insert_mode = 0
                         self.grid.clean()
                     elif event.key == pygame.K_r:
+                        insert_mode = 0
                         self.grid.random()
 
                     # Setting Goal:
                     elif event.key == pygame.K_g:
+                        insert_mode = 0
                         x_click = pygame.mouse.get_pos()[0]
                         y_click = pygame.mouse.get_pos()[1]
                         self.grid.set_cell(x_click, y_click, "GOAL")
@@ -69,7 +77,7 @@ class Game():
                     # elif event.key == pygame.K_SPACE:
 
             # Insert Mode:
-            if(mouse_is_pressed):
+            if(mouse_is_pressed and insert_mode == 1):
                 x_click = pygame.mouse.get_pos()[0]
                 y_click = pygame.mouse.get_pos()[1]
 
