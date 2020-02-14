@@ -1,3 +1,12 @@
+#
+#   Salvatore Campisi
+#
+#   A Star Pathfinding
+#
+#   February 2020, AA 19/20
+#   Artificial Intelligence Laboratory
+#
+
 import pygame
 import random
 
@@ -57,10 +66,16 @@ class Grid():
         # Write new Goal on the Grid:
         self.goal_r = r
         self.goal_c = c
-        self.grid[self.goal_r][self.goal_c] = 1
+        self.grid[self.goal_r][self.goal_c] = 2
 
     def __is_goal(self, r, c):
         return (r == self.goal_r and c == self.goal_c)
+
+    def get_dim(self):
+        return (self.grid_rows, self.grid_cols)
+
+    def get_goal(self):
+        return (self.goal_r, self.goal_c)
 
     def get(self):
         return self.grid
@@ -121,6 +136,23 @@ class Grid():
         if(cmd == "GOAL"):
             self.__set_goal(r,c)
 
+    def clean_path(self):
+        for r in range(self.grid_rows):
+            for c in range(self.grid_cols):
+                if(self.grid[r][c] == 4):
+                    self.grid[r][c] = 0
+
+    def set_path(self, path):
+        if(path == False):
+            self.grid[self.goal_r][self.goal_c] = 3
+            return
+
+        for node in path:
+            r = node[0]
+            c = node[1]
+            self.grid[r][c] = 4
+        self.grid[r][c] = 2
+
     def draw(self, pygame_screen):
         for r in range(self.grid_rows):
             for c in range(self.grid_cols):
@@ -131,8 +163,14 @@ class Grid():
                     tmp_color = Colors.TREE
                 elif(self.grid[r][c] == -2):
                     tmp_color = Colors.WATER
-                elif(self.grid[r][c] == 1):
+                elif(self.grid[r][c] == 2):
                     tmp_color = Colors.GOAL
+                elif(self.grid[r][c] == 3):
+                    tmp_color = Colors.GOAL_NOPATH
+                elif(self.grid[r][c] == 4):
+                    tmp_color = Colors.PATH
+                else:
+                    tmp_color = Colors.BLACK
 
                 tmp_x = (self.cell_width + self.cell_border) * c
                 tmp_y = (self.cell_height + self.cell_border) * r

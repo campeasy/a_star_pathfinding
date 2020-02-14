@@ -1,7 +1,17 @@
+#
+#   Salvatore Campisi
+#
+#   A Star Pathfinding
+#
+#   February 2020, AA 19/20
+#   Artificial Intelligence Laboratory
+#
+
 import pygame
 
 import Colors
 from Grid import Grid
+from Agent import Agent
 
 class Game():
 
@@ -15,6 +25,7 @@ class Game():
         self.window_size = [self.window_width, self.window_height]
 
         self.grid = Grid(self.window_width, self.window_height, grid_size)
+        self.agent = Agent(self.grid)
 
     def __round_mul_64(self, tmp):
         rest = tmp % 64
@@ -50,12 +61,15 @@ class Game():
                 elif event.type == pygame.KEYDOWN:
                     # Insert Type Keys:
                     if event.key == pygame.K_w:
+                        self.grid.clean_path()
                         insert_mode = 1
                         insert_type = "WATER"
                     elif event.key == pygame.K_t:
+                        self.grid.clean_path()
                         insert_mode = 1
                         insert_type = "TREE"
                     elif event.key == pygame.K_l:
+                        self.grid.clean_path()
                         insert_mode = 1
                         insert_type = "LAND"
 
@@ -70,11 +84,15 @@ class Game():
                     # Setting Goal:
                     elif event.key == pygame.K_g:
                         insert_mode = 0
+                        self.grid.clean_path()
                         x_click = pygame.mouse.get_pos()[0]
                         y_click = pygame.mouse.get_pos()[1]
                         self.grid.set_cell(x_click, y_click, "GOAL")
 
-                    # elif event.key == pygame.K_SPACE:
+                    # Pathfinding
+                    elif event.key == pygame.K_SPACE:
+                        path = self.agent.findpath_to_goal()
+                        self.grid.set_path(path)
 
             # Insert Mode:
             if(mouse_is_pressed and insert_mode == 1):
@@ -90,7 +108,3 @@ class Game():
             pygame.display.flip()
 
         pygame.quit()
-
-if __name__ == "__main__":
-    g = Game("A_star_pathfinding", 1800, 1000, "L")
-    g.run()
