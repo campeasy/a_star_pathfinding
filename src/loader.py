@@ -75,7 +75,7 @@ def create_grid(pathname):
     for r in range(rows):
         grid.append([])
         for c in range(cols):
-            grid[r].append(1)
+            grid[r].append(-1)
 
     free_cells = get_list_of_free_cells(pathname)
 
@@ -86,8 +86,3 @@ def create_grid(pathname):
         grid[r][c] = 0
 
     return grid
-
-
-if __name__ == "__main__":
-    my_grid = create_grid("../data/lab_c.txt")
-    print(my_grid)

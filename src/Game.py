@@ -15,7 +15,7 @@ from Agent import Agent
 
 class Game():
 
-    def __init__(self, window_title, window_width, window_height, grid_size):
+    def __init__(self, window_title, window_width, window_height, grid_size, specific_grid):
         self.window_title = window_title
 
         # Rounding Window's width and height to the first multiple of 64:
@@ -24,7 +24,7 @@ class Game():
 
         self.window_size = [self.window_width, self.window_height]
 
-        self.grid = Grid(self.window_width, self.window_height, grid_size)
+        self.grid = Grid(self.window_width, self.window_height, grid_size, specific_grid)
         self.agent = Agent(self.grid)
 
     def __round_mul_64(self, tmp):

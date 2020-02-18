@@ -14,7 +14,7 @@ import Colors
 
 class Grid():
 
-    def __init__(self, window_width, window_height, grid_size):
+    def __init__(self, window_width, window_height, grid_size, specific_grid):
         size = self.__cell_size_from_grid_size(grid_size)
 
         # Single Cell parameters:
@@ -27,8 +27,11 @@ class Grid():
         self.grid_cols = window_width // (self.cell_width + self.cell_border)
 
         # The two-dimensional array rappresenting the Grid:
-        self.grid = []
-        self.__initialize_grid()
+        self.grid = specific_grid
+
+        # If the structure is empty, initialize it:
+        if(not (self.grid)):
+            self.__initialize_grid()
 
         self.goal_r = 0
         self.goal_c = 0

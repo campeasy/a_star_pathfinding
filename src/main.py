@@ -9,13 +9,14 @@
 
 import sys
 
+import loader
 from Game import Game
 
 def check_input(input_list):
     correct_call = "\n[ERROR] correct call:   python main.py WIDTH HEIGHT [S/M/L]\n"
 
     # Input size check:
-    if(len(input_list) < 3):
+    if(len(input_list) < 4):
         print(correct_call)
         return False
 
@@ -42,12 +43,30 @@ def check_input(input_list):
     return True
 
 if __name__ == "__main__":
-    if(not (check_input(sys.argv))):
-        sys.exit(1)
+    # The user want to load a specified labyrinth:
+    if(len(sys.argv) == 2):
+        correct_call = "\n[ERROR] correct call:   python main.py [lab_a/lab_b/lab_c]\n"
 
-    width = int(sys.argv[1])
-    height = int(sys.argv[2])
-    grid_size = sys.argv[3]
+        if(sys.argv[1] == "lab_a" or sys.argv[1] == "lab_b" or sys.argv[1] == "lab_c"):
+            if(sys.argv[1] == "lab_a"): pathname = "../data/lab_a.txt"
+            elif(sys.argv[1] == "lab_b"): pathname = "../data/lab_b.txt"
+            else: pathname = "../data/lab_c.txt"
 
-    g = Game("a_star_pathfinding", width, height, grid_size)
-    g.run()
+            specific_grid = loader.create_grid(pathname)
+            g = Game("a_star_pathfinding", 1535, 959, "M", specific_grid)
+            g.run()
+        else:
+            print(correct_call)
+            sys.exit(1)
+
+    # The user want use the draw/random mode:
+    else:
+        if(not (check_input(sys.argv))):
+            sys.exit(1)
+
+        width = int(sys.argv[1])
+        height = int(sys.argv[2])
+        grid_size = sys.argv[3]
+
+        g = Game("a_star_pathfinding", width, height, grid_size, [])
+        g.run()
